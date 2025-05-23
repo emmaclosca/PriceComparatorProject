@@ -62,14 +62,16 @@ public final class DiscountRepository {
                 csvParser.getRecords()
                         .forEach(csvRecord -> {
                             discounts.add(Discount.builder()
-                                            .productId(csvRecord.get(0))
-                                            .storeName(storeName)
-                                            .fromDate(DateHelper.getDateFromString(csvRecord.get(6)))
-                                            .toDate(DateHelper.getDateFromString(csvRecord.get(7)))
-                                            .percentage(Integer.valueOf(csvRecord.get(8)))
+                                    .productId(csvRecord.get(0))
+                                    .productName(csvRecord.get(1))
+                                    .storeName(storeName)
+                                    .fromDate(DateHelper.getDateFromString(csvRecord.get(6)))
+                                    .toDate(DateHelper.getDateFromString(csvRecord.get(7)))
+                                    .percentage(Integer.valueOf(csvRecord.get(8)))
                                     .build());
                         });
             }
+
         } catch (Exception e) {
             System.out.println("CSV parsing error:" + e);
         }

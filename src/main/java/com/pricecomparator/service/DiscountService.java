@@ -2,7 +2,6 @@ package com.pricecomparator.service;
 
 import com.pricecomparator.model.Discount;
 import com.pricecomparator.repository.DiscountRepository;
-import com.pricecomparator.repository.ProductRepository;
 
 import java.time.LocalDate;
 import java.util.Comparator;
@@ -17,8 +16,12 @@ public class DiscountService {
         this.discountRepository = discountRepository;
     }
 
+    public static DiscountService getDiscountService() {
+        return new DiscountService(DiscountRepository.getInstance());
+    }
+
     // Method to get top current discounts by percentage
-    public List<Discount> getTopCurrentDiscounts(int limit) {
+    public List<Discount> getBestCurrentDiscounts(int limit) {
         LocalDate today = LocalDate.now();
 
         return discountRepository.getAllDiscounts().stream()
@@ -29,4 +32,5 @@ public class DiscountService {
                 .limit(limit)
                 .collect(Collectors.toList());
     }
+
 }

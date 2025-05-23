@@ -5,6 +5,7 @@ import com.sun.net.httpserver.HttpExchange;
 
 import java.io.IOException;
 import java.io.OutputStream;
+import java.nio.charset.StandardCharsets;
 
 abstract class BaseController {
     private final int SUCCESS_CODE = 200;
@@ -16,16 +17,21 @@ abstract class BaseController {
     }
 
     protected void handleSuccessfulRequest(HttpExchange request, String response) throws IOException {
-        request.sendResponseHeaders(SUCCESS_CODE, response.length());
-        OutputStream os = request.getResponseBody();
-        os.write(response.getBytes());
-        os.close();
+        byte[] responseBytes = response.getBytes(StandardCharsets.UTF_8);
+        request.getResponseHeaders().set("Content-Type", "application/json; charset=utf-8");
+        request.sendResponseHeaders(SUCCESS_CODE, responseBytes.length);
+        try (OutputStream os = request.getResponseBody()) {
+            os.write(responseBytes);
+        }
     }
 
     protected void handleFailedRequest(HttpExchange request, Exception e) throws IOException {
-        request.sendResponseHeaders(FAIL_CODE, e.getMessage().length());
-        OutputStream os = request.getResponseBody();
-        os.write(e.getMessage().getBytes());
-        os.close();
+        String errorMessage = e.getMessage();
+        byte[] errorBytes = errorMessage.getBytes(StandardCharsets.UTF_8);
+        request.getResponseHeaders().set("Content-Type", "text/plain; charset=utf-8");
+        request.sendResponseHeaders(FAIL_CODE, errorBytes.length);
+        try (OutputStream os = request.getResponseBody()) {
+            os.write(errorBytes);
+        }
     }
 }

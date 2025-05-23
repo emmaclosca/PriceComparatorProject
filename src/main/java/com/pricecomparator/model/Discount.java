@@ -9,6 +9,7 @@ import java.time.LocalDate;
 @Builder
 public class Discount {
     private String productId;
+    private String productName;
     private String storeName;
     private int percentage;
     private LocalDate fromDate;
