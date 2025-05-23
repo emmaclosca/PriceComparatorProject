@@ -1,9 +1,12 @@
 To run the server you need to install Maven command tool and add it into your bin path.
 
 cd ~/PriceComparatorProject
+
 mvn install
+
 mvn compile
-mvn exec:java -Dexec.mainClass=com.pricecomparator.Server
+
+mvn exec:java -Dexec.mainClass=com.pricecomparator.Server 
 
 OR you can just use terminal and run the shell script: ./run.sh
 
